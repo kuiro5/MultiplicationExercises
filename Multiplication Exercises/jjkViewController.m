@@ -31,6 +31,9 @@
 @implementation jjkViewController
 
 NSInteger correctAns;
+NSInteger problemNum=1;
+NSInteger numCorrectAns = 0;
+BOOL questionAns = NO;
 
 - (void)newQuestion
 {
@@ -45,6 +48,8 @@ NSInteger correctAns;
     NSMutableArray *answerArray = [[NSMutableArray alloc] init];
     [_answerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
     self.answerStatusLabel.hidden = YES;
+    questionAns = NO;
+    
     
     
     tmpMultiplicand = arc4random_uniform(14) + 1;
@@ -126,8 +131,11 @@ NSInteger correctAns;
 
 - (IBAction)resetButtonPressed:(id)sender
 {
-    self.answerLabel.hidden = YES;
     self.resetButton.hidden = YES;
+    self.nextButton.hidden = NO;
+    problemNum = 0;
+    
+    [self newQuestion];
     
 }
 
@@ -148,25 +156,28 @@ NSInteger correctAns;
 
 - (IBAction)nextButtonPressed:(id)sender
 {
-    static NSInteger problemNumber;
     self.answerLabel.hidden = YES;
-    
-    if( problemNumber < numberOfProbs)
-    {
-        [self newQuestion];
-    }
-    else if( problemNumber == numberOfProbs)
+   
+    if( problemNum == numberOfProbs )
     {
         self.resetButton.hidden = NO;
         self.nextButton.hidden = YES;
         
     }
+    else
+    {
+        [self newQuestion];
+    }
     
-    problemNumber++;
+    problemNum++;
+    
+    
 }
 
 - (IBAction)answerSelected:(id)sender
 {
+    if(!questionAns)
+    {
     NSString *answerSelected = [_answerSegment titleForSegmentAtIndex:_answerSegment.selectedSegmentIndex];
     
     self.answerLabel.hidden = NO;
@@ -178,13 +189,20 @@ NSInteger correctAns;
     {
         self.answerStatusLabel.text = @"Correct";
         self.answerStatusLabel.hidden = NO;
+        numCorrectAns++;
+        self.progressLabel.text = [NSString stringWithFormat:@"%d/%d", numCorrectAns, problemNum];
+        
     }
     else
     {
         self.answerStatusLabel.text = @"Incorrect";
         self.answerStatusLabel.hidden = NO;
-        
+    
+        self.progressLabel.text = [NSString stringWithFormat:@"%d/%d", numCorrectAns, problemNum];
+
     }
+    }
+    questionAns = YES;
 }
 
 @end

@@ -117,6 +117,23 @@
                                     <action selector="nextButtonPressed:" destination="2" eventType="touchUpInside" id="e6W-ST-4Vb"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="trr-Nl-pIj">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="73" id="d7b-Ok-ldo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="nextButtonPressed:" destination="2" eventType="touchUpInside" id="DXf-Hl-5Zf"/>
+                                    <action selector="resetButtonPressed:" destination="2" eventType="touchUpInside" id="Kk9-xg-vEd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                         <constraints>
@@ -131,12 +148,13 @@
                             <constraint firstItem="teR-MO-QTs" firstAttribute="top" secondItem="bWj-oE-HLR" secondAttribute="top" type="default" id="EnP-qw-8FB"/>
                             <constraint firstAttribute="bottom" secondItem="teR-MO-QTs" secondAttribute="bottom" constant="131" id="EyU-kf-cQJ"/>
                             <constraint firstItem="teR-MO-QTs" firstAttribute="baseline" secondItem="bWj-oE-HLR" secondAttribute="baseline" type="user" id="Fsj-5E-tVg"/>
+                            <constraint firstItem="trr-Nl-pIj" firstAttribute="centerX" secondItem="vto-Ya-6fK" secondAttribute="centerX" type="user" id="Kqi-AR-Tzy"/>
                             <constraint firstItem="TMS-Xe-yIN" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="MQ0-jF-T17"/>
                             <constraint firstItem="TMS-Xe-yIN" firstAttribute="leading" secondItem="vto-Ya-6fK" secondAttribute="leading" type="default" id="Oqu-6U-chV"/>
-                            <constraint firstItem="Tpn-kR-zG2" firstAttribute="top" secondItem="WQf-FR-wSN" secondAttribute="top" type="default" id="Pul-Vj-86f"/>
                             <constraint firstItem="teR-MO-QTs" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="64" id="Q7C-ej-Qeg"/>
                             <constraint firstItem="l7b-el-pGW" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" type="default" id="RIY-qC-yzF"/>
                             <constraint firstItem="w9S-kL-Eba" firstAttribute="trailing" secondItem="uNz-uy-fWl" secondAttribute="trailing" type="default" id="Urg-LE-rsy"/>
+                            <constraint firstItem="WQf-FR-wSN" firstAttribute="top" secondItem="3" secondAttribute="top" constant="226" id="W94-8e-6Gl"/>
                             <constraint firstItem="uNz-uy-fWl" firstAttribute="trailing" secondItem="VSG-dA-TDm" secondAttribute="trailing" type="default" id="Y8T-hb-Uhd"/>
                             <constraint firstItem="w9S-kL-Eba" firstAttribute="top" secondItem="3" secondAttribute="top" constant="242" id="YR7-N5-NHB"/>
                             <constraint firstItem="uNz-uy-fWl" firstAttribute="top" secondItem="VSG-dA-TDm" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="cqd-Zp-6ok"/>
@@ -145,6 +163,7 @@
                             <constraint firstItem="bWj-oE-HLR" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="104" id="h7w-iD-C2T"/>
                             <constraint firstItem="VSG-dA-TDm" firstAttribute="top" secondItem="3" secondAttribute="top" constant="97" id="hEV-W8-2ii"/>
                             <constraint firstItem="VSG-dA-TDm" firstAttribute="leading" secondItem="uNz-uy-fWl" secondAttribute="leading" type="default" id="jai-TD-Jve"/>
+                            <constraint firstAttribute="bottom" secondItem="trr-Nl-pIj" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="o1h-Pg-cPU"/>
                             <constraint firstItem="l7b-el-pGW" firstAttribute="centerX" secondItem="TMS-Xe-yIN" secondAttribute="centerX" type="default" id="sZ3-TK-5Eo"/>
                             <constraint firstItem="vto-Ya-6fK" firstAttribute="top" secondItem="3" secondAttribute="top" constant="6" id="siS-zM-4I3"/>
                             <constraint firstAttribute="bottom" secondItem="TMS-Xe-yIN" secondAttribute="bottom" constant="78" id="t8c-MJ-ovI"/>
@@ -160,6 +179,7 @@
                         <outlet property="nextButton" destination="l7b-el-pGW" id="7S7-je-p3O"/>
                         <outlet property="progressLabel" destination="teR-MO-QTs" id="zEh-DL-fKt"/>
                         <outlet property="questionsCorrectLabel" destination="bWj-oE-HLR" id="c7h-um-vo1"/>
+                        <outlet property="resetButton" destination="trr-Nl-pIj" id="3k3-4d-PWF"/>
                         <outlet property="startButton" destination="WQf-FR-wSN" id="WeZ-fT-fJZ"/>
                     </connections>
                 </viewController>
@@ -176,6 +196,7 @@
             <relationships>
                 <relationship kind="action" name="answerSelected:"/>
                 <relationship kind="action" name="nextButtonPressed:"/>
+                <relationship kind="action" name="resetButtonPressed:"/>
                 <relationship kind="action" name="startButtonPressed:"/>
                 <relationship kind="outlet" name="answerLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="answerSegment" candidateClass="UISegmentedControl"/>
@@ -185,6 +206,7 @@
                 <relationship kind="outlet" name="nextButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="progressLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="questionsCorrectLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="resetButton" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="startButton" candidateClass="UIButton"/>
             </relationships>
         </class>

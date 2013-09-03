@@ -33,16 +33,78 @@
 {
     NSInteger tmpMultiplicand;
     NSInteger tmpMultiplier;
+    NSInteger correctAns;
     NSInteger answerOne;
     NSInteger answerTwo;
     NSInteger answerThree;
-    NSInteger answerFour;
+    NSInteger tempRand;
+    NSInteger arrayCnt = 0;
+    BOOL evenCount = YES;
+    NSMutableArray *answerArray = [[NSMutableArray alloc] init];
+    
     
     tmpMultiplicand = arc4random_uniform(14) + 1;
     tmpMultiplier = arc4random_uniform(14) + 1;
     
     self.multiplicandLabel.text = [NSString stringWithFormat:@"%d", tmpMultiplicand];
     self.multiplierLabel.text = [NSString stringWithFormat:@"%d", tmpMultiplier];
+    
+    correctAns = tmpMultiplicand * tmpMultiplier;
+    NSNumber *tempNum = [NSNumber numberWithInt:correctAns];
+    [answerArray addObject:tempNum];
+    
+    if(correctAns < 6)
+    {
+        while(arrayCnt < 3)
+        {
+            evenCount = (arrayCnt%2==0);
+            tempRand = arc4random_uniform(4) + 1;
+            
+            if(evenCount == YES)
+                answerOne = correctAns + tempRand;
+            else
+                answerOne = correctAns - tempRand;
+            
+            tempNum = [NSNumber numberWithInt:answerOne];
+            
+            if(![answerArray containsObject:tempNum])
+            {
+                [answerArray addObject:tempNum];
+                arrayCnt++;
+            }
+        }
+    }
+    else if(correctAns > 6)
+    {
+        while(arrayCnt < 3)
+        {
+            evenCount = (arrayCnt%2==0);
+            tempRand = arc4random_uniform(4) + 1;
+            
+            if(evenCount == YES)
+                answerOne = correctAns + tempRand;
+            else
+                answerOne = correctAns - tempRand;
+            
+            tempNum = [NSNumber numberWithInt:answerOne];
+            
+            if(![answerArray containsObject:tempNum])
+            {
+                [answerArray addObject:tempNum];
+                arrayCnt++;
+            }
+        }
+    }
+    
+    NSSortDescriptor *highestToLowest = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:NO];
+    [answerArray sortUsingDescriptors:[NSArray arrayWithObject:highestToLowest]];
+    
+    for(int i = 0; i < 4; i++)
+    {
+        NSString *myString= [[answerArray objectAtIndex:i] stringValue];
+        [_answerSegment setTitle:myString forSegmentAtIndex:i];
+    }
+    
     
 }
 

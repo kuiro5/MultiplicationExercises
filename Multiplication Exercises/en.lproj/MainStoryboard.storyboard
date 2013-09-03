@@ -173,6 +173,7 @@
                     <connections>
                         <outlet property="answerLabel" destination="w9S-kL-Eba" id="4c0-sS-TC4"/>
                         <outlet property="answerSegment" destination="V8f-ks-3iD" id="TCE-OF-QP1"/>
+                        <outlet property="answerStatusLabel" destination="TMS-Xe-yIN" id="q74-CF-vel"/>
                         <outlet property="equalsLineView" destination="Tpn-kR-zG2" id="FVE-bh-x61"/>
                         <outlet property="multiplicandLabel" destination="VSG-dA-TDm" id="XWh-XU-2Cu"/>
                         <outlet property="multiplierLabel" destination="uNz-uy-fWl" id="508-yo-neD"/>
@@ -200,6 +201,7 @@
                 <relationship kind="action" name="startButtonPressed:"/>
                 <relationship kind="outlet" name="answerLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="answerSegment" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="answerStatusLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="equalsLineView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="multiplicandLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="multiplierLabel" candidateClass="UILabel"/>

@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *answerSegment;
 @property (weak, nonatomic) IBOutlet UIView *equalsLineView;
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (weak, nonatomic) IBOutlet UILabel *answerStatusLabel;
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;
 @property (weak, nonatomic) IBOutlet UIButton *startButton;
 @property (weak, nonatomic) IBOutlet UILabel *questionsCorrectLabel;
@@ -29,11 +30,12 @@
 
 @implementation jjkViewController
 
+NSInteger correctAns;
+
 - (void)newQuestion
 {
     NSInteger tmpMultiplicand;
     NSInteger tmpMultiplier;
-    NSInteger correctAns;
     NSInteger answerOne;
     NSInteger answerTwo;
     NSInteger answerThree;
@@ -41,6 +43,8 @@
     NSInteger arrayCnt = 0;
     BOOL evenCount = YES;
     NSMutableArray *answerArray = [[NSMutableArray alloc] init];
+    [_answerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+    self.answerStatusLabel.hidden = YES;
     
     
     tmpMultiplicand = arc4random_uniform(14) + 1;
@@ -57,7 +61,7 @@
     {
         while(arrayCnt < 3)
         {
-            evenCount = (arrayCnt%2==0);
+            evenCount = (arc4random_uniform(50)%2==0);
             tempRand = arc4random_uniform(4) + 1;
             
             if(evenCount == YES)
@@ -78,7 +82,7 @@
     {
         while(arrayCnt < 3)
         {
-            evenCount = (arrayCnt%2==0);
+            evenCount = (arc4random_uniform(50)%2==0);
             tempRand = arc4random_uniform(4) + 1;
             
             if(evenCount == YES)
@@ -95,7 +99,6 @@
             }
         }
     }
-    
     NSSortDescriptor *highestToLowest = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:NO];
     [answerArray sortUsingDescriptors:[NSArray arrayWithObject:highestToLowest]];
     
@@ -123,8 +126,9 @@
 
 - (IBAction)resetButtonPressed:(id)sender
 {
+    self.answerLabel.hidden = YES;
     self.resetButton.hidden = YES;
-    self.startButton.hidden = NO;
+    
 }
 
 - (IBAction)startButtonPressed:(id)sender
@@ -139,11 +143,14 @@
     self.answerSegment.hidden = NO;
     self.questionsCorrectLabel.hidden = NO;
     self.progressLabel.hidden = NO;
+
 }
 
 - (IBAction)nextButtonPressed:(id)sender
 {
     static NSInteger problemNumber;
+    self.answerLabel.hidden = YES;
+    
     if( problemNumber < numberOfProbs)
     {
         [self newQuestion];
@@ -158,7 +165,26 @@
     problemNumber++;
 }
 
-- (IBAction)answerSelected:(id)sender {
+- (IBAction)answerSelected:(id)sender
+{
+    NSString *answerSelected = [_answerSegment titleForSegmentAtIndex:_answerSegment.selectedSegmentIndex];
+    
+    self.answerLabel.hidden = NO;
+    self.answerLabel.text = answerSelected;
+    
+    NSInteger tempNum = [answerSelected intValue];
+    
+    if( tempNum == correctAns)
+    {
+        self.answerStatusLabel.text = @"Correct";
+        self.answerStatusLabel.hidden = NO;
+    }
+    else
+    {
+        self.answerStatusLabel.text = @"Incorrect";
+        self.answerStatusLabel.hidden = NO;
+        
+    }
 }
 
 @end

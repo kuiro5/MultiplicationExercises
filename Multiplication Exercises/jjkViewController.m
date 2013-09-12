@@ -9,6 +9,7 @@
 #define numberOfProbs 10
 
 @interface jjkViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *multiplicationLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *resetButton;
 @property (weak, nonatomic) IBOutlet UILabel *multiplicandLabel;
@@ -30,34 +31,34 @@
 
 @implementation jjkViewController
 
-NSInteger correctAns = 0;           // correct answer to multiplication problem
-NSInteger problemNum = 1;           // current problem number, start at 1
-NSInteger numCorrectAns = 0;        // number of correct answers, start at 0
-BOOL questionAns = NO;              // check if the answer has been answers to avoid multiple answers
+NSInteger correctAns = 0;
+NSInteger problemNum = 1;
+NSInteger numCorrectAns = 0;        
+
 
 - (void)newQuestion
 {
-    NSInteger tmpMultiplicand;          // multiplicand for current problem
-    NSInteger tmpMultiplier;            // multiplicand for current problem
-    NSInteger tmpAnswer;                // possible answer for current problem
-    NSInteger tmpRand;                  // random variable to calculate tmpAnswer
-    NSInteger arrayCnt = 0;             // current answers that have been added to answerArray
+    NSInteger tmpMultiplicand;
+    NSInteger tmpMultiplier;
+    NSInteger tmpAnswer;
+    NSInteger tmpRand;
+    NSInteger arrayCnt = 0;
     BOOL evenCount = YES;               // used to radomize the +/- of tmpAnswer
     NSMutableArray *answerArray = [[NSMutableArray alloc] init];                // holds all possible answers for problem
-    [_answerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];       // unselect all answers on answerSegment
-    self.answerStatusLabel.hidden = YES;                    // hide the answer until user selects it
-    questionAns = NO;                                       // set the quesiton to be unanswered
+    [_answerSegment setSelectedSegmentIndex:UISegmentedControlNoSegment];
+    self.answerStatusLabel.hidden = YES;
+    self.answerSegment.enabled = YES;                       
+    self.nextButton.enabled = NO;
     
     
+    tmpMultiplicand = arc4random_uniform(14) + 1;
+    tmpMultiplier = arc4random_uniform(14) + 1;                 
     
-    tmpMultiplicand = arc4random_uniform(14) + 1;               // random multiplicand from 1->15
-    tmpMultiplier = arc4random_uniform(14) + 1;                 // random multiplie from 1->15
+    self.multiplicandLabel.text = [NSString stringWithFormat:@"%d", tmpMultiplicand];
+    self.multiplierLabel.text = [NSString stringWithFormat:@"%d", tmpMultiplier];
     
-    self.multiplicandLabel.text = [NSString stringWithFormat:@"%d", tmpMultiplicand];       // set multiplicand label
-    self.multiplierLabel.text = [NSString stringWithFormat:@"%d", tmpMultiplier];           // set multiplie label
-    
-    correctAns = tmpMultiplicand * tmpMultiplier;                           // calculate the correct answer
-    NSNumber *tempNum = [NSNumber numberWithInt:correctAns];                // add correctAns to array of possible answers
+    correctAns = tmpMultiplicand * tmpMultiplier;
+    NSNumber *tempNum = [NSNumber numberWithInt:correctAns];                
     [answerArray addObject:tempNum];
     
     if(correctAns < 6)                          // avoid negative answers by only addding a rand number 1->5 for problems with a answer < 6
@@ -70,16 +71,16 @@ BOOL questionAns = NO;              // check if the answer has been answers to a
             
             tempNum = [NSNumber numberWithInt:tmpAnswer];    // cast tmpAnswer to a NSNumber
             
-            if(![answerArray containsObject:tempNum])       // check if answer exists
+            if(![answerArray containsObject:tempNum])
             {
-                [answerArray addObject:tempNum];            // add answer to answerArray if its not a duplicate
+                [answerArray addObject:tempNum];           
                 arrayCnt++;
             }
         }
     }
-    else if(correctAns > 6)                                     // proceed normally for answers greater than 6
+    else if(correctAns > 6)
     {
-        while(arrayCnt < 3)                                     // continute to computate 3 wrong answers
+        while(arrayCnt < 3)
         {
             evenCount = (arc4random_uniform(50)%2==0);          // "randomize" the +/- difference of the wrong answer with the right answer
             tmpRand = arc4random_uniform(4) + 1;                // random offset 1->5
@@ -91,7 +92,7 @@ BOOL questionAns = NO;              // check if the answer has been answers to a
             
             tempNum = [NSNumber numberWithInt:tmpAnswer];       // cast tmpAnswer to NSNumber
             
-            if(![answerArray containsObject:tempNum])           // add answer to answerArray if its not a duplicate
+            if(![answerArray containsObject:tempNum])
             {
                 [answerArray addObject:tempNum];
                 arrayCnt++;
@@ -103,8 +104,8 @@ BOOL questionAns = NO;              // check if the answer has been answers to a
     
     for(int i = 0; i < 4; i++)
     {
-        NSString *myString= [[answerArray objectAtIndex:i] stringValue];        // cast array object to string
-        [_answerSegment setTitle:myString forSegmentAtIndex:i];                 // set title of segment in order from array
+        NSString *myString= [[answerArray objectAtIndex:i] stringValue];        
+        [_answerSegment setTitle:myString forSegmentAtIndex:i];
     }
     
     
@@ -125,28 +126,29 @@ BOOL questionAns = NO;              // check if the answer has been answers to a
 
 - (IBAction)resetButtonPressed:(id)sender
 {
-    self.resetButton.hidden = YES;                  // show reset button
-    self.nextButton.hidden = NO;                    // hide next button
-    problemNum = 0;                                 // reset problem number to 0
-    numCorrectAns = 0;                              // reset number of correct answers to 0
+    self.resetButton.hidden = YES;
+    self.nextButton.hidden = NO;
+    problemNum = 0;
+    numCorrectAns = 0;                              
     self.progressLabel.text = [NSString stringWithFormat:@"%d/%d", numCorrectAns, problemNum];     // set progress Label back to 0/0
     
-    [self newQuestion];                             // initialize a new question
+    [self newQuestion];                             
         
 }
 
 - (IBAction)startButtonPressed:(id)sender
 {
-    [self newQuestion];                                 // initialize a new question
+    [self newQuestion];
     
-    self.multiplicandLabel.hidden = NO;                 // show multiplicand
-    self.multiplierLabel.hidden = NO;                   // show multiplier
-    self.startButton.hidden = YES;                      // hide start button
-    self.nextButton.hidden = NO;                        // show next button
-    self.equalsLineView.hidden = NO;                    // show equals line
-    self.answerSegment.hidden = NO;                     // show answer segmented control
-    self.questionsCorrectLabel.hidden = NO;             // show questionsCorrectLabel
-    self.progressLabel.hidden = NO;                     // show correct number/problem number
+    self.multiplicandLabel.hidden = NO;
+    self.multiplierLabel.hidden = NO;
+    self.startButton.hidden = YES;
+    self.nextButton.hidden = NO;
+    self.equalsLineView.hidden = NO;
+    self.answerSegment.hidden = NO;
+    self.questionsCorrectLabel.hidden = NO;
+    self.progressLabel.hidden = NO;                     
+    self.multiplicationLabel.hidden = NO;
 
 }
 
@@ -161,44 +163,44 @@ BOOL questionAns = NO;              // check if the answer has been answers to a
     }
     else
     {       
-        self.answerLabel.hidden = YES;              // clear the label and init a new problem
+        self.answerLabel.hidden = YES;
         [self newQuestion];
     }
     
-    problemNum++;                                   // increment the current problem num
+    problemNum++;                                  
     
     
 }
 
 - (IBAction)answerSelected:(id)sender
 {
-    if(!questionAns)                                // check to see if the question has been answer
-    {
     NSString *answerSelected = [_answerSegment titleForSegmentAtIndex:_answerSegment.selectedSegmentIndex];         // get the answer the user selects
     
-    self.answerLabel.hidden = NO;                   // show the answer
-    self.answerLabel.text = answerSelected;         // set the answerLabel to the answerSelected
+    self.answerLabel.text = answerSelected;
+    self.answerLabel.hidden = NO;                   
     
-    NSInteger tempNum = [answerSelected intValue];  // number of the answer the user selects
+    
+    NSInteger tempNum = [answerSelected intValue];          // number of the answer the user selects
     
     if( tempNum == correctAns)                      
     {
-        self.answerStatusLabel.text = @"Correct";           // display Correct if the user chooses the correct answer
+        self.answerStatusLabel.text = @"Correct";
         self.answerStatusLabel.hidden = NO;
         numCorrectAns++;
-        self.progressLabel.text = [NSString stringWithFormat:@"%d/%d", numCorrectAns, problemNum];      // set the progressLabel
+        self.progressLabel.text = [NSString stringWithFormat:@"%d/%d", numCorrectAns, problemNum];      
         
     }
     else
     {
-        self.answerStatusLabel.text = @"Incorrect";         // display Incorrect if the user chooses the incorrect answer
+        self.answerStatusLabel.text = @"Incorrect";         
         self.answerStatusLabel.hidden = NO;
     
-        self.progressLabel.text = [NSString stringWithFormat:@"%d/%d", numCorrectAns, problemNum];    //    set the progress label
-
+        self.progressLabel.text = [NSString stringWithFormat:@"%d/%d", numCorrectAns, problemNum];    
     }
-    }
-    questionAns = YES;                  // set the question to be answered disabling future answering
+    
+    self.answerSegment.enabled = NO;
+    self.nextButton.enabled = YES;
+    
 }
 
 @end
